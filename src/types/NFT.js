@@ -17,7 +17,7 @@ const NFTModule = createModule({
 
 		type Query {
 			getAllNFTs: [NFT!]!
-			getNFT(_id: ID): NFT
+			getNFT(_id: ID!): NFT
 		}
 
 		type Mutation {
