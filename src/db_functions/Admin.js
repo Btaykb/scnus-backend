@@ -40,3 +40,14 @@ export const readAdmins = (params) => {
 			console.log('Error while getting admins')
 		})
 }
+
+export const updateAdmin = (queryParams, updatedColumns) => {
+	return AdminObject.findOneAndUpdate(queryParams, updatedColumns, {upsert: true, new: true})
+		.then(res => {
+			console.log(`Admin with id ${res._id} updated`)
+			return { response: res._id }
+		})
+		.catch(err => {
+			console.log('Error while updating admin')
+		})
+}
