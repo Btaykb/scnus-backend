@@ -11,7 +11,7 @@ const NFTSchema = Schema({
 	description: { type: schemaTypes.String, required: false },
 	imageURL: { type: schemaTypes.String, required: true },
 	link: { type: schemaTypes.String, required: false },
-	ownedBy: { type: [schemaTypes.String], required: true, default: [] },
+	owners: { type: [schemaTypes.String], required: true, default: [] },
 })
 
 export const NFTObject = model('NFT', NFTSchema)
@@ -45,7 +45,6 @@ export const readNFTs = (params) => {
 }
 
 export const updateNFT = (queryId, updatedColumns) => {
-	console.log(updatedColumns.name)
 	return NFTObject.findOneAndUpdate({_id: queryId}, updatedColumns, {upsert: true, new: true})
 		.then(res => {
 			console.log(`NFT with id ${res._id} updated`)

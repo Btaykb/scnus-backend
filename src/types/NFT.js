@@ -12,7 +12,7 @@ const NFTModule = createModule({
 			description: String
 			imageURL: String!
 			link: String
-			ownedBy: [ID!]!
+			owners: [ID!]!
 		}
 
 		type Query {
@@ -24,6 +24,7 @@ const NFTModule = createModule({
 			createNFT(event: String!, name: String!, description: String, imageURL: String!, link: String): HTTPResponse
 			updateNFTDetails(queryId: String!, name: String, description: String, imageURL: String, link: String): HTTPResponse
 			deleteNFT(_id: ID!): HTTPResponse
+			addOwner(_id: ID!, ownerId: ID!): HTTPResponse
 		}
 
 	`,
@@ -35,7 +36,8 @@ const NFTModule = createModule({
 		Mutation: {
 			createNFT: (_, args) => createNFT(args),
 			updateNFTDetails: (_, args) => updateNFT(args.queryId, deleteKey(args, ['queryId'])),
-			deleteNFT: (_, args) => console.log('delete nft')
+			deleteNFT: (_, args) => console.log('delete nft'),
+			addOwner: (_, args) => updateNFT(args._id, { $addToSet: { owners: args.ownerId }})
 		}
 	}
 })
