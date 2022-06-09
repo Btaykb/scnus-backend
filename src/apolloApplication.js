@@ -3,6 +3,7 @@ import AdminModule from './types/Admin.js'
 import CustomerModule from "./types/Customer.js";
 import HTTPResponseModule from "./types/HTTPResponse.js";
 import MerchantModule from "./types/Merchant.js";
+import NFTModule from "./types/NFT.js";
 import UserModule from "./types/User.js";
 
 export const apolloApplication = createApplication({
@@ -11,6 +12,7 @@ export const apolloApplication = createApplication({
 		UserModule,
 		AdminModule,
 		CustomerModule,
-		MerchantModule
+		MerchantModule,
+		NFTModule
 	]
 })
