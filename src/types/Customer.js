@@ -33,8 +33,7 @@ const CustomerModule = createModule({
     },
     Mutation: {
       createCustomer: (_, args) => createCustomer(args),
-      updateCustomer: (_, args) =>
-        updateCustomer({ phone: args.queryPhone }, deleteKey(args, ['queryPhone'])),
+      updateCustomer: (_, args) => updateCustomer({ phone: args.queryPhone }, deleteKey(args, ['queryPhone'])),
     },
   },
 });
