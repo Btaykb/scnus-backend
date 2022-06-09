@@ -6,13 +6,20 @@ import { apolloApplication } from './apolloApplication.js'
 
 const schema = apolloApplication.createSchemaForApollo()
 
+const apolloContext = async ({ req }) => {
+	if (req.body.operationName === "IntrospectionQuery") return {}
+	console.log(req.body.operationName)
+	return {}
+}
+
 export default async function startApolloServer() {
 	const app = express()
 	const httpServer = http.createServer(app)
 	const apolloServer = new ApolloServer({
 		schema,
 		csrfPrevention: true,
-		plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+		plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+		context: apolloContext
 	})
 	await apolloServer.start()
 	apolloServer.applyMiddleware({
