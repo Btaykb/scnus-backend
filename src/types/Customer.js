@@ -5,6 +5,8 @@ import {
   updateCustomer,
   createCustomer,
 } from "../db_functions/Customer.js";
+import { readNFTs } from "../db_functions/NFT.js";
+import { readRedemptions } from "../db_functions/Redemption.js";
 import deleteKey from "../utils/deleteKey.js";
 
 const CustomerModule = createModule({
@@ -14,6 +16,8 @@ const CustomerModule = createModule({
       _id: ID!
       name: String!
       phone: ID!
+      redemptions: [Redemption!]!
+      nfts: [NFT!]!
     }
 
     type Query {
@@ -27,6 +31,10 @@ const CustomerModule = createModule({
     }
   `,
   resolvers: {
+    Customer: {
+      redemptions: (parent) => readRedemptions({customerId: parent._id}),
+      nfts: (parent) => readNFTs({owners: parent._id})
+    },
     Query: {
       getAllCustomers: () => readCustomers(),
       getCustomer: (_, args) => readCustomer(args),

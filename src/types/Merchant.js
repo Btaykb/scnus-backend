@@ -5,6 +5,7 @@ import {
 	updateMerchant,
 	createMerchant
   } from "../db_functions/Merchant.js";
+import { readRedemptions } from "../db_functions/Redemption.js";
 
 const MerchantModule = createModule({
   id: "merchant",
@@ -13,6 +14,7 @@ const MerchantModule = createModule({
       _id: ID!
       name: String!
       phone: ID!
+      redemptions: [Redemption!]!
     }
 
     type Query {
@@ -26,6 +28,9 @@ const MerchantModule = createModule({
     }
   `,
   resolvers: {
+    Merchant: {
+      redemptions: (parent) => readRedemptions({merchantId: parent._id})
+    },
     Query: {
       getAllMerchants: () => readMerchants(),
       getMerchant: (_, args) => readMerchant(args),
