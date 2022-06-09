@@ -6,8 +6,8 @@ const Schema = mongoose.Schema
 const schemaTypes = Schema.Types
 
 const RedemptionSchema = Schema({
-	vendor_id: { type: schemaTypes.String, required: true },
-	customer_id: { type: schemaTypes.String, required: true },
+	merchantId: { type: schemaTypes.String, required: true },
+	customerId: { type: schemaTypes.String, required: true },
 	amount: { type: schemaTypes.Number, required: true },
 	discount: { type: schemaTypes.Number, required: true },
 	time: { type: schemaTypes.String, required: true }
@@ -18,7 +18,7 @@ export const RedemptionObject = model('Redemption', RedemptionSchema)
 export const createRedemption = async (redemption) => {
 	const httpResponse = new RedemptionObject({
 		...redemption, 
-		time: new Date().toUTCString()
+		time: new Date().toTimeString()
 	}).save()
 		.then(res => {
 			console.log(`New redemption created with id ${res._id}`)

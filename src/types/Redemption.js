@@ -6,8 +6,8 @@ const RedemptionModule = createModule({
 	typeDefs: gql`
 		type Redemption {
 			_id: ID!
-			vendor_id: String!
-			customer_id: String!
+			merchantId: String!
+			customerId: String!
 			amount: Float!
 			discount: Float!
 			time: String!
@@ -19,7 +19,7 @@ const RedemptionModule = createModule({
 		}
 
 		type Mutation {
-			createRedemption(vendor_id: String!, customer_id: String!, amount: Float!, discount: Float!): HTTPResponse
+			createRedemption(merchantId: String!, customerId: String!, amount: Float!, discount: Float!): HTTPResponse
 		}
 
 	`,
