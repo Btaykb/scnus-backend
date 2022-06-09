@@ -33,7 +33,7 @@ const MerchantModule = createModule({
     Mutation: {
       createMerchant: (_, args) => createMerchant(args),
       updateMerchant: (_, args) =>
-        updateMerchant({ phone: args.queryPhone }, { name: args.name }),
+        updateMerchant({ phone: args.queryPhone }, deleteKey(args, ['queryPhone'])),
     },
   },
 });
