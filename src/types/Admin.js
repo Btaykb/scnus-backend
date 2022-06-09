@@ -1,5 +1,6 @@
 import { createModule, gql } from "graphql-modules";
 import { createAdmin, readAdmins, readAdmin, updateAdmin } from "../db_functions/Admin.js";
+import deleteKey from "../utils/deleteKey.js";
 
 const AdminModule = createModule({
 	id: 'admin',
@@ -28,7 +29,7 @@ const AdminModule = createModule({
 		},
 		Mutation: {
 			createAdmin: (_, args) => createAdmin(args),
-			updateAdmin: (_, args) => updateAdmin({ phone: args.queryPhone }, { name: args.name })
+			updateAdmin: (_, args) => updateAdmin({ phone: args.queryPhone }, deleteKey(args, ['queryPhone']))
 		}
 	}
 })
