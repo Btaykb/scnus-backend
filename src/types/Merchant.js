@@ -24,7 +24,7 @@ const MerchantModule = createModule({
 
     type Mutation {
       createMerchant(name: String!, phone: String!): HTTPResponse
-      updateMerchant(queryPhone: String!, name: String!): HTTPResponse
+      updateMerchant(phone: String!, name: String!): HTTPResponse
     }
   `,
   resolvers: {
@@ -37,7 +37,7 @@ const MerchantModule = createModule({
     },
     Mutation: {
       createMerchant: (_, args) => createMerchant(args),
-      updateMerchant: (_, args) => updateMerchant({ phone: args.queryPhone }, deleteKey(args, ['queryPhone'])),
+      updateMerchant: (_, args) => updateMerchant({ phone: args.phone }, args),
     },
   },
 });

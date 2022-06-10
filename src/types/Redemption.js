@@ -26,7 +26,7 @@ const RedemptionModule = createModule({
 	resolvers: {
 		Query: {
 			getAllRedemptions: () => readRedemptions(),
-			getRedemption: (_, args) => readRedemption(args._id)
+			getRedemption: (_, args) => readRedemption(args)
 		},
 		Mutation: {
 			createRedemption: (_, args) => createRedemption(args),

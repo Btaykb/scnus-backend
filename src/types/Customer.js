@@ -7,7 +7,6 @@ import {
 } from "../db_functions/Customer.js";
 import { readNFTs } from "../db_functions/NFT.js";
 import { readRedemptions } from "../db_functions/Redemption.js";
-import deleteKey from "../utils/deleteKey.js";
 
 const CustomerModule = createModule({
   id: "customer",
@@ -27,7 +26,7 @@ const CustomerModule = createModule({
 
     type Mutation {
       createCustomer(name: String!, phone: String!): HTTPResponse
-      updateCustomer(queryPhone: String!, name: String!): HTTPResponse
+      updateCustomer(phone: String!, name: String!): HTTPResponse
     }
   `,
   resolvers: {
@@ -41,7 +40,7 @@ const CustomerModule = createModule({
     },
     Mutation: {
       createCustomer: (_, args) => createCustomer(args),
-      updateCustomer: (_, args) => updateCustomer({ phone: args.queryPhone }, deleteKey(args, ['queryPhone'])),
+      updateCustomer: (_, args) => updateCustomer({ phone: args.phone }, args),
     },
   },
 });

@@ -1,6 +1,5 @@
 import { createModule, gql } from "graphql-modules";
-import { createNFT, readNFT, readNFTs, updateNFT } from "../db_functions/NFT.js";
-import deleteKey from '../utils/deleteKey.js'
+import { createNFT, deleteNFT, readNFT, readNFTs, updateNFT } from "../db_functions/NFT.js";
 
 const NFTModule = createModule({
 	id: 'nft',
@@ -22,22 +21,22 @@ const NFTModule = createModule({
 
 		type Mutation {
 			createNFT(event: String!, name: String!, description: String, imageURL: String!, link: String): HTTPResponse
-			updateNFTDetails(queryId: String!, name: String, description: String, imageURL: String, link: String): HTTPResponse
-			deleteNFT(_id: ID!): HTTPResponse
+			updateNFTDetails(_id: String!, name: String, description: String, imageURL: String, link: String): HTTPResponse
 			addOwner(_id: ID!, ownerId: ID!): HTTPResponse
+			deleteNFT(_id: ID!): HTTPResponse
 		}
 
 	`,
 	resolvers: {
 		Query: {
 			getAllNFTs: () => readNFTs(),
-			getNFT: (_, args) => readNFT(args._id)
+			getNFT: (_, args) => readNFT(args)
 		},
 		Mutation: {
 			createNFT: (_, args) => createNFT(args),
-			updateNFTDetails: (_, args) => updateNFT(args.queryId, deleteKey(args, ['queryId'])),
-			deleteNFT: (_, args) => console.log('delete nft'),
-			addOwner: (_, args) => updateNFT(args._id, { $addToSet: { owners: args.ownerId }})
+			updateNFTDetails: (_, args) => updateNFT({_id: args._id}, args),
+			addOwner: (_, args) => updateNFT({_id: args._id}, { $addToSet: { owners: args.ownerId }}),
+			deleteNFT: (_, args) => deleteNFT(args)
 		}
 	}
 })
