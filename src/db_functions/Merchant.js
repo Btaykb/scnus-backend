@@ -1,6 +1,8 @@
 import { unpackSingleDocument, unpackMultipleDocuments } from '../utils/unpackDocument.js'
 import mongoose from 'mongoose'
 import uniqueValidator from 'mongoose-unique-validator'
+import jwt from 'jsonwebtoken'
+import { JWT_SIGN_KEY } from '../utils/constants.js'
 
 const model = mongoose.model
 const Schema = mongoose.Schema
@@ -20,7 +22,8 @@ export const createMerchant = async (merchant) => {
 	const httpResponse = new MerchantObject({ name, phone }).save()
 		.then(res => {
 			console.log(`New merchant created with id ${res._id}`)
-			return { response: res._id }
+			const token = jwt.sign({ _id: res._id, phone: res.phone }, JWT_SIGN_KEY)
+			return { response: token }
 		})
 		.catch(err => {
 			return { error: err.code ? err.code : err }
