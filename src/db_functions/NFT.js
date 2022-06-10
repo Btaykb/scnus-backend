@@ -1,8 +1,8 @@
 import { unpackSingleDocument, unpackMultipleDocuments } from '../utils/unpackDocument.js'
 import mongoose from 'mongoose'
+
 const model = mongoose.model
 const Schema = mongoose.Schema
-
 const schemaTypes = Schema.Types
 
 const NFTSchema = Schema({

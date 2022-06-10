@@ -1,14 +1,17 @@
 import { unpackSingleDocument, unpackMultipleDocuments } from '../utils/unpackDocument.js'
 import mongoose from 'mongoose'
+import uniqueValidator from 'mongoose-unique-validator'
+
 const model = mongoose.model
 const Schema = mongoose.Schema
-
 const schemaTypes = Schema.Types
 
 const MerchantSchema = Schema({
 	name: { type: schemaTypes.String, required: true, default: 'Event Merchant' },
 	phone: { type: schemaTypes.String, required: true, unique: true }
 })
+
+MerchantSchema.plugin(uniqueValidator)
 
 export const MerchantObject = model('Merchant', MerchantSchema)
 

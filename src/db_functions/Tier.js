@@ -1,8 +1,9 @@
 import { unpackSingleDocument, unpackMultipleDocuments } from '../utils/unpackDocument.js'
 import mongoose from 'mongoose'
+import uniqueValidator from 'mongoose-unique-validator'
+
 const model = mongoose.model
 const Schema = mongoose.Schema
-
 const schemaTypes = Schema.Types
 
 const TierSchema = Schema({
@@ -10,6 +11,8 @@ const TierSchema = Schema({
 	tokenReq: { type: schemaTypes.Number, required: true, unique: true },
 	discount: { type: schemaTypes.Number, required: true }
 })
+
+TierSchema.plugin(uniqueValidator)
 
 export const TierObject = model('Tier', TierSchema)
 
