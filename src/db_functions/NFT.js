@@ -23,13 +23,13 @@ export const createNFT = async (nft) => {
 			return { response: res._id }
 		})
 		.catch(err => {
-			return { error: err.code }
+			return { error: err.code ? err.code : err }
 		})
 	return httpResponse
 }
 
-export const readNFT = (_id) => {
-	return NFTObject.findOne({ _id: _id})
+export const readNFT = (params) => {
+	return NFTObject.findOne(params)
 		.then(unpackSingleDocument)
 		.catch(err => {
 			console.log('Error while getting NFT: DB error')
@@ -44,13 +44,26 @@ export const readNFTs = (params) => {
 		})
 }
 
-export const updateNFT = (queryId, updatedColumns) => {
-	return NFTObject.findOneAndUpdate({_id: queryId}, updatedColumns, {upsert: true, new: true})
+export const updateNFT = (query, update) => {
+	return NFTObject.findOneAndUpdate(query, update, {upsert: true, new: true})
 		.then(res => {
 			console.log(`NFT with id ${res._id} updated`)
 			return { response: res._id }
 		})
 		.catch(err => {
 			console.log('Error while updating NFT: DB error')
+			return { error: err.code ? err.code : err }
+		})
+}
+
+export const deleteNFT = (query) => {
+	return NFTObject.findOneAndDelete(query)
+		.then(res => {
+			console.log(`NFT with id ${res._id} deleted`)
+			return { response: "Deletion completed." }
+		})
+		.catch(err => {
+			console.log('Error while deleting NFT: DB error')
+			return { error: err.code ? err.code : err }
 		})
 }
