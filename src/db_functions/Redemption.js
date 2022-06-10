@@ -25,7 +25,7 @@ export const createRedemption = async (redemption) => {
 			return { response: res._id }
 		})
 		.catch(err => {
-			return { error: err.code }
+			return { error: err.code ? err.code : err }
 		})
 	return httpResponse
 }

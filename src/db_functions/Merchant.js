@@ -20,7 +20,7 @@ export const createMerchant = async (merchant) => {
 			return { response: res._id }
 		})
 		.catch(err => {
-			return { error: err.code }
+			return { error: err.code ? err.code : err }
 		})
 	return httpResponse
 }
@@ -41,13 +41,14 @@ export const readMerchants = (params) => {
 		})
 }
 
-export const updateMerchant = (queryParams, updatedColumns) => {
-	return MerchantObject.findOneAndUpdate(queryParams, updatedColumns, {upsert: true, new: true})
+export const updateMerchant = (query, update) => {
+	return MerchantObject.findOneAndUpdate(query, update, {upsert: true, new: true})
 		.then(res => {
 			console.log(`Merchant with id ${res._id} updated`)
 			return { response: res._id }
 		})
 		.catch(err => {
 			console.log('Error while updating merchant')
+			return { error: err.code ? err.code : err }
 		})
 }

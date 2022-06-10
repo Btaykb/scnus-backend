@@ -20,7 +20,7 @@ export const createAdmin = async (admin) => {
 			return { response: res._id }
 		})
 		.catch(err => {
-			return { error: err.code }
+			return { error: err.code ? err.code : err }
 		})
 	return httpResponse
 }
@@ -41,13 +41,14 @@ export const readAdmins = (params) => {
 		})
 }
 
-export const updateAdmin = (queryParams, updatedColumns) => {
-	return AdminObject.findOneAndUpdate(queryParams, updatedColumns, {upsert: true, new: true})
+export const updateAdmin = (query, update) => {
+	return AdminObject.findOneAndUpdate(query, update, {upsert: true, new: true})
 		.then(res => {
 			console.log(`Admin with id ${res._id} updated`)
 			return { response: res._id }
 		})
 		.catch(err => {
 			console.log('Error while updating admin')
+			return { error: err.code ? err.code : err }
 		})
 }

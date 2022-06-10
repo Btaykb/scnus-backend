@@ -20,7 +20,7 @@ export const createCustomer = async (customer) => {
 			return { response: res._id }
 		})
 		.catch(err => {
-			return { error: err.code }
+			return { error: err.code ? err.code : err }
 		})
 	return httpResponse
 }
@@ -41,13 +41,14 @@ export const readCustomers = (params) => {
 		})
 }
 
-export const updateCustomer = (queryParams, updatedColumns) => {
-	return CustomerObject.findOneAndUpdate(queryParams, updatedColumns, {upsert: true, new: true})
+export const updateCustomer = (query, upate) => {
+	return CustomerObject.findOneAndUpdate(query, upate, {upsert: true, new: true})
 		.then(res => {
 			console.log(`Customer with id ${res._id} updated`)
 			return { response: res._id }
 		})
 		.catch(err => {
 			console.log('Error while updating customer')
+			return { error: err.code ? err.code : err }
 		})
 }
