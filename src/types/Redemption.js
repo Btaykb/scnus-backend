@@ -16,6 +16,8 @@ const RedemptionModule = createModule({
 		type Query {
 			getAllRedemptions: [Redemption!]!
 			getRedemption(_id: ID!): Redemption
+			totalRedemptions: Int
+			totalDiscount: Float
 		}
 
 		type Mutation {
@@ -26,7 +28,9 @@ const RedemptionModule = createModule({
 	resolvers: {
 		Query: {
 			getAllRedemptions: () => readRedemptions(),
-			getRedemption: (_, args) => readRedemption(args)
+			getRedemption: (_, args) => readRedemption(args),
+			totalRedemptions: () => readRedemptions().then(r => r.length),
+			totalDiscount: () => readRedemptions().then(r => r.map(r => r.discount).reduce((a,b) => a + b, 0))
 		},
 		Mutation: {
 			createRedemption: (_, args) => createRedemption(args),

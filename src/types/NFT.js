@@ -12,6 +12,7 @@ const NFTModule = createModule({
 			imageURL: String!
 			link: String
 			owners: [ID!]!
+			totalOwners: Int
 		}
 
 		type Query {
@@ -28,9 +29,12 @@ const NFTModule = createModule({
 
 	`,
 	resolvers: {
+		NFT: {
+			totalOwners: async (parent) => readNFT(parent).then(n => n.owners.length)
+		},
 		Query: {
 			getAllNFTs: () => readNFTs(),
-			getNFT: (_, args) => readNFT(args)
+			getNFT: (_, args) => readNFT(args),
 		},
 		Mutation: {
 			createNFT: (_, args) => createNFT(args),

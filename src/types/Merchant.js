@@ -20,6 +20,7 @@ const MerchantModule = createModule({
     type Query {
       getAllMerchants: [Merchant!]!
       getMerchant(_id: ID, phone: ID): Merchant
+      totalMerchants: Int
     }
 
     type Mutation {
@@ -34,6 +35,7 @@ const MerchantModule = createModule({
     Query: {
       getAllMerchants: () => readMerchants(),
       getMerchant: (_, args) => readMerchant(args),
+      totalMerchants: () => readMerchants().then(m => m.length)
     },
     Mutation: {
       createMerchant: (_, args) => createMerchant(args),

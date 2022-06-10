@@ -22,6 +22,7 @@ const CustomerModule = createModule({
     type Query {
       getAllCustomers: [Customer!]!
       getCustomer(_id: ID, phone: ID): Customer
+      totalCustomers: Int
     }
 
     type Mutation {
@@ -37,6 +38,7 @@ const CustomerModule = createModule({
     Query: {
       getAllCustomers: () => readCustomers(),
       getCustomer: (_, args) => readCustomer(args),
+      totalCustomers: () => readCustomers().then(c => c.length)
     },
     Mutation: {
       createCustomer: (_, args) => createCustomer(args),
