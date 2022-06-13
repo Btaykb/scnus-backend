@@ -12,8 +12,8 @@ const TierModule = createModule({
 		}
 
 		type Query {
-			getAllTiers: [Tier!]!
-			getTier(name: String!): Tier
+			readTiers: [Tier!]!
+			readTier(name: String!): Tier
 		}
 
 		type Mutation {
@@ -25,8 +25,8 @@ const TierModule = createModule({
 	`,
 	resolvers: {
 		Query: {
-			getAllTiers: () => readTiers(),
-			getTier: (_, args) => readTier(args)
+			readTiers: () => readTiers(),
+			readTier: (_, args) => readTier(args)
 		},
 		Mutation: {
 			createTier: (_, args) => createTier(args),

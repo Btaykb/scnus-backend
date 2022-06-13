@@ -11,8 +11,8 @@ const AdminModule = createModule({
 		}
 
 		type Query {
-			getAllAdmins: [Admin!]!
-			getAdmin(_id: ID, phone: ID): Admin
+			readAdmins: [Admin!]!
+			readAdmin(_id: ID, phone: ID): Admin
 		}
 
 		type Mutation {
@@ -23,8 +23,8 @@ const AdminModule = createModule({
 	`,
 	resolvers: {
 		Query: {
-			getAllAdmins: () => readAdmins(),
-			getAdmin: (_, args) => readAdmin(args)
+			readAdmins: () => readAdmins(),
+			readAdmin: (_, args) => readAdmin(args)
 		},
 		Mutation: {
 			createAdmin: (_, args) => createAdmin(args),

@@ -5,7 +5,7 @@ const model = mongoose.model
 const Schema = mongoose.Schema
 const schemaTypes = Schema.Types
 
-const NFTSchema = Schema({
+const TokenSchema = Schema({
 	event: { type: schemaTypes.String, required: true },
 	name: { type: schemaTypes.String, required: true },
 	description: { type: schemaTypes.String, required: false },
@@ -14,12 +14,12 @@ const NFTSchema = Schema({
 	owners: { type: [schemaTypes.String], required: true, default: [] },
 })
 
-export const NFTObject = model('NFT', NFTSchema)
+export const TokenObject = model('Token', TokenSchema)
 
-export const createNFT = async (nft) => {
-	const httpResponse = new NFTObject(nft).save()
+export const createToken = async (nft) => {
+	const httpResponse = new TokenObject(nft).save()
 		.then(res => {
-			console.log(`New NFT created with id ${res._id}`)
+			console.log(`New token created with id ${res._id}`)
 			return { response: res._id }
 		})
 		.catch(err => {
@@ -28,42 +28,42 @@ export const createNFT = async (nft) => {
 	return httpResponse
 }
 
-export const readNFT = (params) => {
-	return NFTObject.findOne(params)
+export const readToken = (params) => {
+	return Object.findOne(params)
 		.then(unpackSingleDocument)
 		.catch(err => {
-			console.log('Error while getting NFT: DB error')
+			console.log('Error while getting token: DB error')
 		})
 }
 
-export const readNFTs = (params) => {
-	return NFTObject.find(params)
+export const readTokens = (params) => {
+	return TokenObject.find(params)
 		.then(unpackMultipleDocuments)
 		.catch(err => {
-			console.log('Error while getting NFTs: DB error')
+			console.log('Error while getting tokens: DB error')
 		})
 }
 
-export const updateNFT = (query, update) => {
-	return NFTObject.findOneAndUpdate(query, update, {upsert: true, new: true})
+export const updateToken = (query, update) => {
+	return TokenObject.findOneAndUpdate(query, update, {upsert: true, new: true})
 		.then(res => {
-			console.log(`NFT with id ${res._id} updated`)
+			console.log(`Token with id ${res._id} updated`)
 			return { response: res._id }
 		})
 		.catch(err => {
-			console.log('Error while updating NFT: DB error')
+			console.log('Error while updating token: DB error')
 			return { error: err.code ? err.code : err }
 		})
 }
 
-export const deleteNFT = (query) => {
-	return NFTObject.findOneAndDelete(query)
+export const deleteToken = (query) => {
+	return TokenObject.findOneAndDelete(query)
 		.then(res => {
-			console.log(`NFT with id ${res._id} deleted`)
+			console.log(`Token with id ${res._id} deleted`)
 			return { response: "Deletion completed." }
 		})
 		.catch(err => {
-			console.log('Error while deleting NFT: DB error')
+			console.log('Error while deleting token: DB error')
 			return { error: err.code ? err.code : err }
 		})
 }

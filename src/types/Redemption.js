@@ -14,8 +14,8 @@ const RedemptionModule = createModule({
 		}
 
 		type Query {
-			getAllRedemptions: [Redemption!]!
-			getRedemption(_id: ID!): Redemption
+			readRedemptions: [Redemption!]!
+			readRedemption(_id: ID!): Redemption
 			totalRedemptions: Int
 			totalDiscount: Float
 		}
@@ -27,8 +27,8 @@ const RedemptionModule = createModule({
 	`,
 	resolvers: {
 		Query: {
-			getAllRedemptions: () => readRedemptions(),
-			getRedemption: (_, args) => readRedemption(args),
+			readRedemptions: () => readRedemptions(),
+			readRedemption: (_, args) => readRedemption(args),
 			totalRedemptions: () => readRedemptions().then(r => r.length),
 			totalDiscount: () => readRedemptions().then(r => r.map(r => r.discount).reduce((a,b) => a + b, 0))
 		},
