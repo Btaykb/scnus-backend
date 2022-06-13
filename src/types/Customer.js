@@ -5,7 +5,7 @@ import {
   updateCustomer,
   createCustomer,
 } from "../db_functions/Customer.js";
-import { readNFTs } from "../db_functions/NFT.js";
+import { readTokens } from "../db_functions/Token.js";
 import { readRedemptions } from "../db_functions/Redemption.js";
 
 const CustomerModule = createModule({
@@ -16,12 +16,14 @@ const CustomerModule = createModule({
       name: String!
       phone: ID!
       redemptions: [Redemption!]!
-      nfts: [NFT!]!
+      tokens: [Token!]!
+      redemptionCount: Int!
+      tokenCount: Int!
     }
 
     type Query {
-      getAllCustomers: [Customer!]!
-      getCustomer(_id: ID, phone: ID): Customer
+      readCustomers: [Customer!]!
+      readCustomer(_id: ID, phone: ID): Customer
       totalCustomers: Int
     }
 
@@ -33,11 +35,13 @@ const CustomerModule = createModule({
   resolvers: {
     Customer: {
       redemptions: (parent) => readRedemptions({customerId: parent._id}),
-      nfts: (parent) => readNFTs({owners: parent._id})
+      tokens: (parent) => readTokens({owners: parent._id}),
+      redemptionCount: (parent) => readRedemptions({customerId: parent._id}).then(reds => reds.length),
+      tokenCount: (parent) => readTokens({owners: parent._id}).then(nfts => nfts.length)
     },
     Query: {
-      getAllCustomers: () => readCustomers(),
-      getCustomer: (_, args) => readCustomer(args),
+      readCustomers: () => readCustomers(),
+      readCustomer: (_, args) => readCustomer(args),
       totalCustomers: () => readCustomers().then(c => c.length)
     },
     Mutation: {
