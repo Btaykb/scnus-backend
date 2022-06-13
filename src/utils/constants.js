@@ -1,1 +1,1 @@
-export const JWT_SIGN_KEY = "scan-nus-ej7r90kn"
+export const JWT_SIGN_KEY = "scannus"
