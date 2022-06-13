@@ -1,15 +1,30 @@
-import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core'
+import { ApolloServerPluginDrainHttpServer, AuthenticationError } from 'apollo-server-core'
 import { ApolloServer } from 'apollo-server-express'
 import express from 'express'
-import http, { Server } from 'http'
+import http from 'http'
 import { apolloApplication } from './apolloApplication.js'
+import jwt from 'jsonwebtoken'
+import { JWT_SIGN_KEY } from './utils/constants.js'
 
 const schema = apolloApplication.createSchemaForApollo()
 
+const whitelisted = ["IntrospectionQuery", "CreateAdmin", "CreateCustomer", "CreateMerchant"]
+
+const getUserFromJwt = (token) => {
+	try {
+		return jwt.verify(token, JWT_SIGN_KEY)
+	} catch (error) {
+		return {}
+	}
+}
+
 const apolloContext = async ({ req }) => {
-	if (req.body.operationName === "IntrospectionQuery") return {}
-	console.log(req.body.operationName)
-	return {}
+	if (whitelisted.includes(req.body.operationName)) return {}
+	const token = req.headers.authorization || 'Bearer null'
+	if (!token.includes('Bearer ')) throw new AuthenticationError('Token must use Bearer format')
+	const user = getUserFromJwt(token.split(' ')[1])
+	if (!user) throw new AuthenticationError('Must be logged in to use this query/mutation/subscription.')
+	return user
 }
 
 export default async function startApolloServer() {
