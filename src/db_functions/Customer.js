@@ -10,7 +10,8 @@ const schemaTypes = Schema.Types
 
 const CustomerSchema = Schema({
 	name: { type: schemaTypes.String, required: true, default: 'Event Customer' },
-	phone: { type: schemaTypes.String, required: true, unique: true }
+	phone: { type: schemaTypes.String, required: true, unique: true },
+	otp: { type: schemaTypes.String, required: true, unique: false }
 })
 
 CustomerSchema.plugin(uniqueValidator)
@@ -22,7 +23,7 @@ export const createCustomer = async (customer) => {
 	const httpResponse = new CustomerObject({ name, phone }).save()
 		.then(res => {
 			console.log(`New customer created with id ${res._id}`)
-			const token = jwt.sign({ _id: res._id, phone: res.phone }, JWT_SIGN_KEY)
+			const token = jwt.sign({ _id: res._id, phone: res.phone, __resolveType: 'Customer' }, JWT_SIGN_KEY)
 			return { response: token }
 		})
 		.catch(err => {

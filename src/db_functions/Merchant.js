@@ -10,7 +10,8 @@ const schemaTypes = Schema.Types
 
 const MerchantSchema = Schema({
 	name: { type: schemaTypes.String, required: true, default: 'Event Merchant' },
-	phone: { type: schemaTypes.String, required: true, unique: true }
+	phone: { type: schemaTypes.String, required: true, unique: true },
+	otp: { type: schemaTypes.String, required: true, unique: false }
 })
 
 MerchantSchema.plugin(uniqueValidator)
@@ -22,7 +23,7 @@ export const createMerchant = async (merchant) => {
 	const httpResponse = new MerchantObject({ name, phone }).save()
 		.then(res => {
 			console.log(`New merchant created with id ${res._id}`)
-			const token = jwt.sign({ _id: res._id, phone: res.phone }, JWT_SIGN_KEY)
+			const token = jwt.sign({ _id: res._id, phone: res.phone, __resolveType: 'Merchant' }, JWT_SIGN_KEY)
 			return { response: token }
 		})
 		.catch(err => {

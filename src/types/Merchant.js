@@ -14,6 +14,7 @@ const MerchantModule = createModule({
       _id: ID!
       name: String!
       phone: ID!
+      otp: String
       redemptions: [Redemption!]!
     }
 

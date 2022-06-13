@@ -10,8 +10,10 @@ const schemaTypes = Schema.Types
 
 const AdminSchema = Schema({
 	name: { type: schemaTypes.String, required: true, default: 'Event Admin' },
-	phone: { type: schemaTypes.String, required: true, unique: true }
+	phone: { type: schemaTypes.String, required: true, unique: true },
+	otp: { type: schemaTypes.String, required: false, unique: false }
 })
+
 
 AdminSchema.plugin(uniqueValidator)
 
@@ -22,7 +24,7 @@ export const createAdmin = async (admin) => {
 	const httpResponse = new AdminObject({ name, phone }).save()
 		.then(res => {
 			console.log(`New admin created with id ${res._id}`)
-			const token = jwt.sign({ _id: res._id, phone: res.phone }, JWT_SIGN_KEY)
+			const token = jwt.sign({ _id: res._id, phone: res.phone, __resolveType: 'Admin' }, JWT_SIGN_KEY)
 			return { response: token }
 		})
 		.catch(err => {
@@ -55,6 +57,14 @@ export const updateAdmin = (query, update) => {
 		})
 		.catch(err => {
 			console.log('Error while updating admin')
+			return { error: err.code ? err.code : err }
+		})
+}
+
+export const updateAdminOTP = (query) => {
+	return AdminObject.findOneAndUpdate(query, { otp: Math.floor(Math.random() * (999999 - 100000) ) + 100000}, { new: true})
+		.then(res => ({ response: res.otp })) // TODO: Remove return
+		.catch(err => {
 			return { error: err.code ? err.code : err }
 		})
 }

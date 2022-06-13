@@ -15,6 +15,7 @@ const CustomerModule = createModule({
       _id: ID!
       name: String!
       phone: ID!
+      otp: String
       redemptions: [Redemption!]!
       tokens: [Token!]!
       redemptionCount: Int!
