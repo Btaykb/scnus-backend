@@ -29,7 +29,7 @@ export const createToken = async (nft) => {
 }
 
 export const readToken = (params) => {
-	return Object.findOne(params)
+	return TokenObject.findOne(params)
 		.then(unpackSingleDocument)
 		.catch(err => {
 			console.log('Error while getting token: DB error')

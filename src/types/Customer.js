@@ -37,7 +37,7 @@ const CustomerModule = createModule({
       redemptions: (parent) => readRedemptions({customerId: parent._id}),
       tokens: (parent) => readTokens({owners: parent._id}),
       redemptionCount: (parent) => readRedemptions({customerId: parent._id}).then(reds => reds.length),
-      tokenCount: (parent) => readTokens({owners: parent._id}).then(nfts => nfts.length)
+      tokenCount: (parent) => readTokens({owners: parent._id}).then(tokens => tokens.length)
     },
     Query: {
       readCustomers: () => readCustomers(),

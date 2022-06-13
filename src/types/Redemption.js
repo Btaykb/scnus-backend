@@ -30,7 +30,7 @@ const RedemptionModule = createModule({
 			readRedemptions: () => readRedemptions(),
 			readRedemption: (_, args) => readRedemption(args),
 			totalRedemptions: () => readRedemptions().then(r => r.length),
-			totalDiscount: () => readRedemptions().then(r => r.map(r => r.discount).reduce((a,b) => a + b, 0))
+			totalDiscount: () => readRedemptions().then(r => r.map(r => r.discount).reduce((a,b) => a + b, 0)).then(d => d.toFixed(2))
 		},
 		Mutation: {
 			createRedemption: (_, args) => createRedemption(args),

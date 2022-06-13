@@ -30,7 +30,7 @@ const TokenModule = createModule({
 	`,
 	resolvers: {
 		Token: {
-			ownerCount: async (parent) => readToken(parent).then(n => n.owners.length)
+			ownerCount: (parent) => readToken(parent).then(n => n.owners.length)
 		},
 		Query: {
 			readTokens: () => readTokens(),
