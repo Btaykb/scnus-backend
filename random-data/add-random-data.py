@@ -22,7 +22,7 @@ customers = []
 for _ in trange(CUSTOMER_N):
 	customers.append({
 		"name": f"{names.get_first_name()} {names.get_last_name()}",
-		"phone": random.randint(80000000, 99999999)
+		"phone": str(random.randint(80000000, 99999999))
 	})
 print()
 
@@ -32,7 +32,7 @@ merchants = []
 for _ in trange(MERCHANT_N):
 	merchants.append({
 		"name": faker.Faker().company(),
-		"phone": random.randint(80000000, 99999999)
+		"phone": str(random.randint(80000000, 99999999))
 	})
 print()
 
