@@ -4,6 +4,7 @@ import {
   readCustomers,
   updateCustomer,
   createCustomer,
+  updateCustomerOTP,
 } from "../db_functions/Customer.js";
 import { readTokens } from "../db_functions/Token.js";
 import { readRedemptions } from "../db_functions/Redemption.js";
@@ -31,6 +32,7 @@ const CustomerModule = createModule({
     type Mutation {
       createCustomer(name: String!, phone: String!): HTTPResponse
       updateCustomer(phone: String!, name: String!): HTTPResponse
+      updateCustomerOTP(phone: String!): HTTPResponse
     }
   `,
   resolvers: {
@@ -48,6 +50,7 @@ const CustomerModule = createModule({
     Mutation: {
       createCustomer: (_, args) => createCustomer(args),
       updateCustomer: (_, args) => updateCustomer({ phone: args.phone }, args),
+      updateCustomerOTP: (_, args) => updateCustomerOTP(args)
     },
   },
 });

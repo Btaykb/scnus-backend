@@ -3,7 +3,8 @@ import {
 	readMerchant,
 	readMerchants,
 	updateMerchant,
-	createMerchant
+	createMerchant,
+  updateMerchantOTP
   } from "../db_functions/Merchant.js";
 import { readRedemptions } from "../db_functions/Redemption.js";
 
@@ -27,6 +28,7 @@ const MerchantModule = createModule({
     type Mutation {
       createMerchant(name: String!, phone: String!): HTTPResponse
       updateMerchant(phone: String!, name: String!): HTTPResponse
+      updateMerchantOTP(phone: String!): HTTPResponse
     }
   `,
   resolvers: {
@@ -41,6 +43,7 @@ const MerchantModule = createModule({
     Mutation: {
       createMerchant: (_, args) => createMerchant(args),
       updateMerchant: (_, args) => updateMerchant({ phone: args.phone }, args),
+      updateMerchantOTP: (_, args) => updateMerchantOTP(args)
     },
   },
 });

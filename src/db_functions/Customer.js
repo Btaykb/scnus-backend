@@ -59,3 +59,11 @@ export const updateCustomer = (query, upate) => {
 			return { error: err.code ? err.code : err }
 		})
 }
+
+export const updateCustomerOTP = (query) => {
+	return CustomerObject.findOneAndUpdate(query, { otp: Math.floor(Math.random() * (999999 - 100000) ) + 100000}, { new: true})
+		.then(res => ({ response: res.otp })) // TODO: Remove return
+		.catch(err => {
+			return { error: err.code ? err.code : err }
+		})
+}
