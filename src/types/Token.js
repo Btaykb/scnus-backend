@@ -1,4 +1,4 @@
-import { createModule, gql } from "graphql-modules";
+import { CONTEXT, createModule, gql } from "graphql-modules";
 import { createToken, deleteToken, readToken, readTokens, updateToken } from "../db_functions/Token.js";
 
 const TokenModule = createModule({
@@ -23,7 +23,7 @@ const TokenModule = createModule({
 		type Mutation {
 			createToken(event: String!, name: String!, description: String, imageURL: String!, link: String): HTTPResponse
 			updateToken(_id: String!, name: String, description: String, imageURL: String, link: String): HTTPResponse
-			addTokenOwner(_id: ID!, ownerId: ID!): HTTPResponse
+			addTokenToCurrentUser(_id: ID!): HTTPResponse
 			deleteToken(_id: ID!): HTTPResponse
 		}
 
@@ -39,7 +39,7 @@ const TokenModule = createModule({
 		Mutation: {
 			createToken: (_, args) => createToken(args),
 			updateToken: (_, args) => updateToken({_id: args._id}, args),
-			addTokenOwner: (_, args) => updateToken({_id: args._id}, { $addToSet: { owners: args.ownerId }}),
+			addTokenToCurrentUser: (_, args, context) => updateToken({_id: args._id}, { $addToSet: { owners: context._id }}),
 			deleteToken: (_, args) => deleteToken(args)
 		}
 	}
