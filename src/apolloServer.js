@@ -10,7 +10,7 @@ const schema = apolloApplication.createSchemaForApollo()
 
 const whitelisted = ["IntrospectionQuery", "CreateAdmin", "CreateCustomer", "CreateMerchant"]
 
-const getUserFromJwt = (token) => {
+export const getUserFromJwt = (token) => {
 	try {
 		return jwt.verify(token, JWT_SIGN_KEY)
 	} catch (error) {
@@ -19,6 +19,7 @@ const getUserFromJwt = (token) => {
 }
 
 const apolloContext = async ({ req }) => {
+	if (req.body.operationName !== 'IntrospectionQuery') console.log(req.body.operationName)
 	if (whitelisted.includes(req.body.operationName)) return {}
 	const token = req.headers.authorization || 'Bearer null'
 	if (!token.includes('Bearer ')) throw new AuthenticationError('Token must use Bearer format')
