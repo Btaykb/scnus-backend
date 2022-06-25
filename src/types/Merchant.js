@@ -7,6 +7,19 @@ import {
   updateMerchantOTP
   } from "../db_functions/Merchant.js";
 import { readRedemptions } from "../db_functions/Redemption.js";
+import jwt from 'jsonwebtoken'
+import { JWT_SIGN_KEY, TIERS } from "../utils/constants.js";
+import { readCustomer } from "../db_functions/Customer.js";
+import { readTokens } from "../db_functions/Token.js";
+
+const parseReward = (token) => {
+  try {
+    const res = jwt.verify(token, JWT_SIGN_KEY)
+    return { _id: res._id, iat: res.iat }
+  } catch (error) {
+    return { _id: null, iat: null}
+  }
+}
 
 const MerchantModule = createModule({
   id: "merchant",
@@ -29,6 +42,7 @@ const MerchantModule = createModule({
       createMerchant(name: String!, phone: String!): HTTPResponse
       updateMerchant(phone: String!, name: String!): HTTPResponse
       updateMerchantOTP(phone: String!): HTTPResponse
+      verifyReward(token: String!): HTTPResponse
     }
   `,
   resolvers: {
@@ -43,7 +57,16 @@ const MerchantModule = createModule({
     Mutation: {
       createMerchant: (_, args) => createMerchant(args),
       updateMerchant: (_, args) => updateMerchant({ phone: args.phone }, args),
-      updateMerchantOTP: (_, args) => updateMerchantOTP(args)
+      updateMerchantOTP: (_, args) => updateMerchantOTP(args),
+      verifyReward: async (_, args) => {
+        const { token } = args
+        const { _id, iat } = parseReward(token)
+        const customer = await readCustomer({ _id: _id})
+        if (!customer) return { error: 'Customer not found.'}
+        const tokenCount = await readTokens( { owners: _id }).then(tokens => tokens.length)
+        const tier = TIERS.filter(t => t.tokenReq <= tokenCount).reverse()[0]
+        return { response: `${_id}-${tier.discount}` }
+      }
     },
   },
 });

@@ -11,7 +11,7 @@ const schemaTypes = Schema.Types
 const CustomerSchema = Schema({
 	name: { type: schemaTypes.String, required: true, default: 'Event Customer' },
 	phone: { type: schemaTypes.String, required: true, unique: true },
-	otp: { type: schemaTypes.String, required: true, unique: false }
+	otp: { type: schemaTypes.String, required: false, unique: false }
 })
 
 CustomerSchema.plugin(uniqueValidator)
@@ -62,7 +62,7 @@ export const updateCustomer = (query, upate) => {
 
 export const updateCustomerOTP = (query) => {
 	return CustomerObject.findOneAndUpdate(query, { otp: Math.floor(Math.random() * (999999 - 100000) ) + 100000}, { new: true})
-		.then(res => ({ response: res.otp })) // TODO: Remove return
+		.then(res => res ? ({ response: res.otp }) : ({ error: "Not found" })) // TODO: Remove return
 		.catch(err => {
 			return { error: err.code ? err.code : err }
 		})
