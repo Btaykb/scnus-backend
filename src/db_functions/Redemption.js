@@ -18,7 +18,7 @@ export const RedemptionObject = model('Redemption', RedemptionSchema)
 export const createRedemption = async (redemption) => {
 	const httpResponse = new RedemptionObject({
 		...redemption, 
-		time: new Date().toTimeString()
+		time: new Date().toISOString()
 	}).save()
 		.then(res => {
 			console.log(`New redemption created with id ${res._id}`)
