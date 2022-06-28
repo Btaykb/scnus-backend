@@ -11,6 +11,7 @@ import jwt from 'jsonwebtoken'
 import { JWT_SIGN_KEY, TIERS } from "../utils/constants.js";
 import { readCustomer } from "../db_functions/Customer.js";
 import { readTokens } from "../db_functions/Token.js";
+import isToday from "../utils/isToday.js";
 
 const parseReward = (token) => {
   try {
@@ -30,6 +31,8 @@ const MerchantModule = createModule({
       phone: ID!
       otp: String
       redemptions: [Redemption!]!
+      discountToday: Float!
+      discount: Float
     }
 
     type Query {
@@ -47,7 +50,9 @@ const MerchantModule = createModule({
   `,
   resolvers: {
     Merchant: {
-      redemptions: (parent) => readRedemptions({merchantId: parent._id})
+      redemptions: (parent) => readRedemptions({merchantId: parent._id}),
+      discountToday: (parent) => readRedemptions({merchantId: parent._id}).then(res => res.filter(r => isToday(r.time))).then(res => res.reduce((x, y) => x + y.discount, 0)),
+      discount: (parent) => readRedemptions({merchantId: parent._id}).then(res => res.reduce((x, y) => x + y.discount, 0))
     },
     Query: {
       readMerchants: () => readMerchants(),
@@ -61,6 +66,7 @@ const MerchantModule = createModule({
       verifyReward: async (_, args) => {
         const { token } = args
         const { _id, iat } = parseReward(token)
+        console.log(token)
         const customer = await readCustomer({ _id: _id})
         if (!customer) return { error: 'Customer not found.'}
         const tokenCount = await readTokens( { owners: _id }).then(tokens => tokens.length)
