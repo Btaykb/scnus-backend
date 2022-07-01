@@ -5,6 +5,7 @@ import names
 import random
 from tqdm import trange, tqdm
 import faker
+import string
 
 HOST = 'localhost'
 PORT = '27107'
@@ -29,10 +30,13 @@ print()
 print('Inserting Merchants')
 MERCHANT_N = 30
 merchants = []
+locations = ['Fine Foods', 'Stephen Riady Centre', 'Education Resource Centre', 'BIZ2', 'COM3', 'onenorth']
 for _ in trange(MERCHANT_N):
 	merchants.append({
 		"name": faker.Faker().company(),
-		"phone": str(random.randint(80000000, 99999999))
+		"phone": str(random.randint(80000000, 99999999)),
+		"location": random.choice(locations),
+		"terms" : [ "Valid until 30/10/2022" ]
 	})
 print()
 
@@ -46,11 +50,12 @@ print('Inserting Tokens')
 TOKEN_N = 15
 tokens = []
 for i in trange(TOKEN_N):
+	seed = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(10))
 	tokens.append({
 		"event": "NUS Fintech Lab",
 		"name": faker.Faker().company(),
 		"description": faker.Faker().catch_phrase(),
-		"imageURL": f"https://picsum.photos/id/{i + 1}/200",
+		"imageURL": f"https://picsum.photos/seed/{seed}/200",
 		"owners": random.sample(customer_ids, random.randint(50, 100))
 	})
 print()

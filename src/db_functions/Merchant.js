@@ -11,7 +11,9 @@ const schemaTypes = Schema.Types
 const MerchantSchema = Schema({
 	name: { type: schemaTypes.String, required: true, default: 'Event Merchant' },
 	phone: { type: schemaTypes.String, required: true, unique: true },
-	otp: { type: schemaTypes.String, required: false, unique: false }
+	otp: { type: schemaTypes.String, required: false, unique: false },
+	location: { type: schemaTypes.String, required: true},
+	terms: { type: [schemaTypes.String], required: true, default: []}
 })
 
 MerchantSchema.plugin(uniqueValidator)

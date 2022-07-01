@@ -30,6 +30,8 @@ const MerchantModule = createModule({
       name: String!
       phone: ID!
       otp: String
+      location: String!,
+      terms: [String!]!
       redemptions: [Redemption!]!
       discountToday: Float!
       discount: Float
