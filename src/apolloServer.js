@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken'
 import { JWT_SIGN_KEY } from './utils/constants.js'
 
 const schema = apolloApplication.createSchemaForApollo()
+const PORT = process.env.PORT || 4000;
 
 const whitelisted = ["IntrospectionQuery", "CreateAdmin", "CreateCustomer", "CreateMerchant"]
 
@@ -42,6 +43,6 @@ export default async function startApolloServer() {
 		app,
 		path: '/'
 	})
-	await new Promise((resolve) => httpServer.listen( { port: 4000 }, resolve))
+	await new Promise((resolve) => httpServer.listen( { port: PORT }, resolve))
 	console.log(`🚀 Server ready at http://localhost:4000${apolloServer.graphqlPath}`);
 }
